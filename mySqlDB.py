@@ -40,6 +40,6 @@ def createBuisnessTags():
 def getOccasions():
   cursor.execute("SELECT name FROM occasions")
   results= cursor.fetchall()
-  return results
+  return [result[0] for result in results]
 def closeConnection():
   connection.close()
