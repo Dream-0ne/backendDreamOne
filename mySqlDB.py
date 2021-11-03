@@ -20,23 +20,23 @@ def createTables():
   createBuisnessTags()
 def createOccasions():
   occasions = ["Birthday","Nightout","Party","Date","Exploring"]
-  cursor.execute(f"CREATE table if not exists occasions (id integer, name text, PRIMARY KEY(id))")
+  cursor.execute(f"CREATE table if not exists occasions ( name text)")
   for i in range(5):
-    sql = "INSERT INTO occasions (id, name) VALUES (%s, %s)"
+    sql = "INSERT INTO occasions (name) VALUES (%s, %s)"
     val = (i,str(occasions[i]))
     cursor.execute(sql,val)
   connection.commit()
 def createOccasionsFilters():
-  cursor.execute(f"CREATE table if not exists occasionsfilters (id integer, occasionid integer, filter text, PRIMARY KEY(id))")
+  cursor.execute(f"CREATE table if not exists occasionsfilters ( occasionid integer, filter text)")
   connection.commit()
 def createFiltersTags():
-  cursor.execute(f"CREATE table if not exists filterTags (filterid integer, tag text, PRIMARY KEY(filterid,tag))")
+  cursor.execute(f"CREATE table if not exists filterTags (filterid integer, tag text)")
   connection.commit()
 def createBuisness():
-  cursor.execute(f"CREATE table if not exists buisness (id integer, name text, phone text, address TEXT, PRIMARY KEY(id))")
+  cursor.execute(f"CREATE table if not exists buisness ( name text, phone text, address TEXT)")
   connection.commit()
 def createBuisnessTags():
-  cursor.execute(f"CREATE table if not exists buisness (buisnessid integer, filter text, tag text, PRIMARY KEY(buisnessid,filter,tag))")
+  cursor.execute(f"CREATE table if not exists buisness (buisnessid integer, filter text, tag text)")
   connection.commit()
 def getOccasions():
   cursor.execute("SELECT name FROM occasions")
