@@ -13,11 +13,11 @@ def connect():
   )
   cursor = connection.cursor()
 def createTables():
-  createOccasions()
+  #createOccasions()
   createOccasionsFilters()
-  createFiltersTags()
-  createBuisness()
-  createBuisnessTags()
+  #createFiltersTags()
+  #createBuisness()
+  #createBuisnessTags()
 def createOccasions():
   occasions = ["Birthday","Nightout","Party","Date","Exploring"]
   cursor.execute(f"CREATE table if not exists occasions ( name text)")
@@ -26,11 +26,11 @@ def createOccasions():
     cursor.execute(sql)
   connection.commit()
 def createOccasionsFilters():
-  cursor.execute(f"CREATE table if not exists occasionsfilters ( occasionid integer, filter text)")
-  filters = ["Food","Shopping","Events"]
-  for i in range(3):
-    sql = f"INSERT INTO occasionsfilters(filter) VALUES ({filters[i]});"
-    cursor.execute(sql)
+  #cursor.execute(f"CREATE table if not exists occasionsfilters ( occasionid integer, filter text)")
+  #filters = ['Food','Shopping','Events']
+  #for i in range(3):
+  sql = '''INSERT INTO occasionsfilters(id,'Filter',occasionid) VALUES (0,'filter1',0);'''
+  cursor.execute(sql)
   connection.commit()
 def createFiltersTags():
   cursor.execute(f"CREATE table if not exists filterTags (filterid integer, tag text)")
