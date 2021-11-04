@@ -22,7 +22,7 @@ def occasionList():
     return jsonify(occasionlist)
 
 @app.route('/fitlers', methods=['GET'])
-def occasionList():
+def filtersList():
     occasionlist = mySqlDB.getFilters()
     # Cross origin issues work around for front-end fetch API calls
     @after_this_request 
