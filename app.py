@@ -8,7 +8,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 mySqlDB.connect()
-mySqlDB.createTables()
+#mySqlDB.createTables()
     
 
 @app.route('/occasions', methods=['GET'])
@@ -21,7 +21,7 @@ def occasionList():
         return response
     return jsonify(occasionlist)
 
-@app.route('/fitlers', methods=['GET'])
+@app.route('/filters', methods=['GET'])
 def filtersList():
     occasionlist = mySqlDB.getFilters()
     # Cross origin issues work around for front-end fetch API calls
