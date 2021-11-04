@@ -13,7 +13,7 @@ def connect():
   )
   cursor = connection.cursor()
 def createTables():
-  #createOccasions()
+  createOccasions()
   createOccasionsFilters()
   createFiltersTags()
   createBuisness()
@@ -42,6 +42,10 @@ def createBuisnessTags():
   cursor.execute(f"CREATE table if not exists buisness (buisnessid integer, filter text, tag text)")
   connection.commit()
 def getOccasions():
+  cursor.execute("SELECT name FROM occasions")
+  results= cursor.fetchall()
+  return [result[0] for result in results]
+def getFilters():
   cursor.execute("SELECT name FROM occasions")
   results= cursor.fetchall()
   return [result[0] for result in results]
