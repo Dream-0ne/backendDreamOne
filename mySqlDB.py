@@ -27,10 +27,10 @@ def createOccasions():
   connection.commit()
 def createOccasionsFilters():
   #cursor.execute(f"CREATE table if not exists occasionsfilters ( occasionid integer, filter text)")
-  #filters = ['Food','Shopping','Events']
-  #for i in range(3):
-  sql = '''INSERT INTO occasionsfilters(id,filter,occasionid) VALUES (1,'filter1',2);'''
-  cursor.execute(sql)
+  filters = ['Food','Shopping','Events']
+  postgres_insert_query = """ INSERT INTO occasionsfilters (filter, id, occasionid) VALUES (%s,%s,%s)"""
+  record_to_insert = ('Food', 2, 1)
+  cursor.execute(postgres_insert_query, record_to_insert)
   connection.commit()
 def createFiltersTags():
   cursor.execute(f"CREATE table if not exists filterTags (filterid integer, tag text)")
@@ -48,6 +48,6 @@ def getOccasions():
 def getFilters():
   cursor.execute("SELECT filter FROM occasionsfilters")
   results= cursor.fetchall()
-  return [result[0] for result in results]
+  return results
 def closeConnection():
   connection.close()
