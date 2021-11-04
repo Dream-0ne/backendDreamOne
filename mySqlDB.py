@@ -27,7 +27,7 @@ def createOccasions():
   connection.commit()
 def createOccasionsFilters():
   cursor.execute(f"CREATE table if not exists occasionsfilters ( occasionid integer, filter text)")
-  filters = ["Food,Shopping","Events"]
+  filters = ["Food","Shopping","Events"]
   for i in range(3):
     sql = f"INSERT INTO occasionsfilters(filter) VALUES ({filters[i]});"
     cursor.execute(sql)
