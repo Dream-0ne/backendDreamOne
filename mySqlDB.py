@@ -13,7 +13,7 @@ def connect():
   )
   cursor = connection.cursor()
 def createTables():
-  createOccasions()
+  #createOccasions()
   createOccasionsFilters()
   createFiltersTags()
   createBuisness()
