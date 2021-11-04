@@ -46,7 +46,7 @@ def getOccasions():
   results= cursor.fetchall()
   return [result[0] for result in results]
 def getFilters():
-  cursor.execute("SELECT name FROM occasions")
+  cursor.execute("SELECT filter FROM occasionsfilters")
   results= cursor.fetchall()
   return [result[0] for result in results]
 def closeConnection():
