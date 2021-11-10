@@ -5,10 +5,10 @@ import mySqlDB
 import json
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-
+change = False
 
 mySqlDB.connect()
-#mySqlDB.createTables()
+mySqlDB.drop_create()
     
 
 @app.route('/occasions', methods=['GET'])

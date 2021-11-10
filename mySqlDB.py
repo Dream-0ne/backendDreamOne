@@ -6,6 +6,13 @@ ID_SIZE = 11
 connection = None
 cursor = None
 
+def drop_create():
+  global cursor
+  tables = ['occasions','occasionfilters','filtertags','buisness','buisnesstags']
+  for table in tables:
+    cursor.execute(f"Drop table {table} if exists")
+  createTables()
+
 def connect():
   global connection
   global cursor
@@ -15,11 +22,11 @@ def connect():
   cursor = connection.cursor()
 
 def createTables():
-  #createOccasions()
+  createOccasions()
   createOccasionsFilters()
-  #createFiltersTags()
-  #createBuisness()
-  #createBuisnessTags()
+  createFiltersTags()
+  createBuisness()
+  createBuisnessTags()
 
 def createOccasions():
   occasions = ["Birthday","Nightout","Party","Date","Exploring"]
@@ -49,7 +56,7 @@ def createBuisness():
   connection.commit()
 
 def createBuisnessTags():
-  cursor.execute(f"CREATE table if not exists buisness (buisnessid integer, filter text, tag text)")
+  cursor.execute(f"CREATE table if not exists buisnesstags (buisnessid integer, filter text, tag text)")
   connection.commit()
 
 def getOccasions():
