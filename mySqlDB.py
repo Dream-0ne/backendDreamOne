@@ -22,8 +22,8 @@ def connect():
   cursor = connection.cursor()
 
 def createTables():
-  createOccasions()
-  createOccasionsFilters()
+  # createOccasions()
+  # createOccasionsFilters()
   createFiltersTags()
   createBuisness()
   createBuisnessTags()
