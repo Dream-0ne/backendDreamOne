@@ -32,7 +32,7 @@ def createOccasions():
   occasions = ["Birthday","Nightout","Party","Date","Exploring"]
   cursor.execute(f"CREATE table if not exists occasions ( name text)")
   for i in range(5):
-    sql = f"INSERT INTO occasions(name) VALUES ({occasions[i]});"
+    sql = f"INSERT INTO occasions(name) VALUES ('{occasions[i]}');"
     cursor.execute(sql)
   connection.commit()
 
@@ -40,7 +40,7 @@ def createOccasionsFilters():
   filters = ['Shopping','Events']
   idCount = 3
   for i in range(len(filters)):
-    postgres_insert_query = """ INSERT INTO occasionsfilters (filter, id, occasionid) VALUES (%s,%s,'%s')"""
+    postgres_insert_query = """ INSERT INTO occasionsfilters (filter, id, occasionid) VALUES (%s,%s,%s)"""
     record_to_insert = (filters[i], idCount, 1)
     cursor.execute(postgres_insert_query, record_to_insert)
     idCount+=1
