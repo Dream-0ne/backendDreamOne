@@ -16,17 +16,16 @@ def drop_create():
 def connect():
   global connection
   global cursor
-  connection = psycopg2.connect(
-    'postgres://wyrrcvebqcqwgc:0dfe7409d50bb77c0fa6b482391b50a527c2f3a7d18ae052bae3624ebcd6dd74@ec2-54-224-142-15.compute-1.amazonaws.com:5432/d2jp9osap146v'
+  connection = psycopg2.connect('postgres://ocgorhxfhtqouz:0b5ab52acd79bde38474f47067a4b7b91c48e21298e5592ced499cd391f423d0@ec2-34-202-66-20.compute-1.amazonaws.com:5432/d381s47af7e19t'
   )
   cursor = connection.cursor()
 
 def createTables():
   createOccasions()
-  # # createOccasionsFilters()
-  # createFiltersTags()
-  # createBuisness()
-  # createBuisnessTags()
+  createOccasionsFilters()
+  createFiltersTags()
+  createBuisness()
+  createBuisnessTags()
 
 def createOccasions():
   occasions = ["Birthday","Nightout","Party","Date","Exploring"]
