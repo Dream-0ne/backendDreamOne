@@ -22,11 +22,11 @@ def connect():
   cursor = connection.cursor()
 
 def createTables():
-  # createOccasions()
-  # createOccasionsFilters()
-  createFiltersTags()
-  createBuisness()
-  createBuisnessTags()
+  createOccasions()
+  # # createOccasionsFilters()
+  # createFiltersTags()
+  # createBuisness()
+  # createBuisnessTags()
 
 def createOccasions():
   occasions = ["Birthday","Nightout","Party","Date","Exploring"]

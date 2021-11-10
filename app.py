@@ -8,7 +8,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 change = False
 
 mySqlDB.connect()
-mySqlDB.drop_create()
+mySqlDB.createTables()
     
 
 @app.route('/occasions', methods=['GET'])
