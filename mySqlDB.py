@@ -37,11 +37,10 @@ def createOccasions():
   connection.commit()
 
 def createOccasionsFilters():
-  #cursor.execute(f"CREATE table if not exists occasionsfilters ( occasionid integer, filter text)")
   filters = ['Shopping','Events']
   idCount = 3
   for i in range(len(filters)):
-    postgres_insert_query = """ INSERT INTO occasionsfilters (filter, id, occasionid) VALUES (%s,%s,%s)"""
+    postgres_insert_query = """ INSERT INTO occasionsfilters (filter, id, occasionid) VALUES (%s,%s,'%s')"""
     record_to_insert = (filters[i], idCount, 1)
     cursor.execute(postgres_insert_query, record_to_insert)
     idCount+=1
