@@ -10,7 +10,7 @@ def drop_create():
   global cursor
   tables = ['occasions','occasionfilters','filtertags','buisness','buisnesstags']
   for table in tables:
-    cursor.execute(f"Drop table {table} if exists")
+    cursor.execute(f"Drop table if exists {table}")
   createTables()
 
 def connect():
