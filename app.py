@@ -21,9 +21,10 @@ def occasionList():
         return response
     return jsonify(occasionlist)
 
-@app.route('/filters', methods=['GET'])
-def filtersList():
-    occasionlist = mySqlDB.getFilters()
+@app.route('/filters/<occasion>', methods=['GET'])
+def filtersList(occasion):
+    print(occasion)
+    occasionlist = mySqlDB.getFilters(occasion)
     # Cross origin issues work around for front-end fetch API calls
     @after_this_request 
     def add_header(response):
