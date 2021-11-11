@@ -60,7 +60,7 @@ def createBuisnessTags():
 def getOccasions():
   cursor.execute("SELECT name FROM occasions")
   results= cursor.fetchall()
-  return [result[0] for result in results]
+  return list(set([result[0] for result in results]))
 
 def getFilters(occasion):
   output = {}
