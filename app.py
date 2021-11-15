@@ -31,6 +31,28 @@ def filtersList(occasion):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
     return jsonify(occasionlist)
+'''
+This method takes in a filterlist parameter which consist of filter and chosen requirments
+Based on the passed in parameters it will pass in businesses that fit that criteria
+
+Filterlist parameter format -  Filter1:requirement1,filter2,requirement2
+For example: if the users chooses food and shopping and adds requirements it becomes Food:Mexican,Shopping:thriftstore for filterlist
+'''
+@app.route('/business/<filterlist>', methods=['GET'])
+def businessList(filterlist):
+    print(filterlist)
+    filterMap = {}
+    chosenFilters = filterlist.split(",")
+    for i in range (len(chosenFilters)):
+        val = chosenFilters[i].split(":")
+        filterMap[val[0]] = val[1]
+    #occasionlist = mySqlDB.getFilters(occasion)
+    # Cross origin issues work around for front-end fetch API calls
+    @after_this_request 
+    def add_header(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response
+    return jsonify(filterMap)
 
 if __name__ == "__main__":
     app.run(host="localhost",port=5000)
