@@ -93,7 +93,7 @@ def getFilters(occasion):
   filters = {}
   for filter in occasion_to_filters[occasion]:
     filters[filter] = filters_to_tags.get(filter,[])
-  return filter
+  return filters
 
 # def getTags(filter):
 #   cursor.execute(f"SELECT tag from filterTags where filterid='{filter}'")
