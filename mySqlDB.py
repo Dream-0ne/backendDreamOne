@@ -87,7 +87,7 @@ def createBuisnessTags():
   connection.commit()
 
 def getOccasions():
-  return occasion_to_filters.keys()
+  return list(occasion_to_filters.keys())
 
 def getFilters(occasion):
   filters = {}
