@@ -87,24 +87,18 @@ def createBuisnessTags():
   connection.commit()
 
 def getOccasions():
-  cursor.execute("SELECT name FROM occasions")
-  results= cursor.fetchall()
-  return list(set([result[0] for result in results]))
+  return occasion_to_filters.keys()
 
 def getFilters(occasion):
-  output = {}
-  query = f"SELECT f.id, f.filter from occasionsfilters f, occasions o where o.id=f.occasionid and o.name=\'{occasion}\'"
-  cursor.execute(query)
-  filters= cursor.fetchall()
-  for filter in filters:
-    id,name = filter
-    output[name] = getTags(id)
-  return output
+  filters = {}
+  for filter in occasion_to_filters[occasion]:
+    filters[filter] = filters_to_tags.get(filter,[])
+  return filter
 
-def getTags(filter):
-  cursor.execute(f"SELECT tag from filterTags where filterid='{filter}'")
-  results=cursor.fetchall()
-  return [result[0] for result in results]
+# def getTags(filter):
+#   cursor.execute(f"SELECT tag from filterTags where filterid='{filter}'")
+#   results=cursor.fetchall()
+#   return [result[0] for result in results]
 
 
 def closeConnection():
