@@ -2,29 +2,25 @@ import psycopg2
 # from .connector import connection # Pip install mysql connector.py
 
 occasion_to_filters = {
-  'Birthday': ['Food', 'Shopping', 'Gaming', 'Travel', 'Volunteering', 'Art and Craft'],
-  'Date Night': ['Food', 'Movies', 'Gaming', 'Adventures', 'Travel'],
-  'Brunch': ['Food' 'Movies', 'Pet-Friendly', 'Party'],
-  'Graduation': ['Food', 'Shopping', 'Travel', 'Movies', 'Volunteering'],
-  'Traveling': ['Food', 'Shopping', 'Movies', 'Money Exchange', 'Tours', 'Sightseeing'],
-  'Wedding': ['Destination Wedding', 'Art and Craft', 'Bakery', 'Food', 'Shopping'],
+  'Birthday': ['Food', 'Shopping', 'Adventures', 'Travel', 'Volunteering', 'Art and Craft'],
+  'Date Night': ['Food', 'Movies', 'Adventures', 'Travel'],
+  'Brunch': ['Food' 'Theatres', 'Pet-Friendly', 'Party'],
+  'Graduation': ['Food', 'Shopping', 'Travel', 'Theatres', 'Volunteering'],
+  'Traveling': ['Food', 'Shopping', 'Theatres',  'Tours', 'Sightseeing'],
+  'Wedding': [ 'Art and Craft', 'Bakery', 'Food', 'Shopping'],
   'Anniversary': ['Party Halls', 'Party Planners', 'Food', 'Bakery', 'Art and Craft'],
-  'Moving': ['Movers', 'Car Rental', 'Art and Craft', 'Interior Decorator', 'Architects'],
-  'Holiday': ['Food', 'Shopping', 'Movies', 'Gaming', 'Tours']
+  'Moving': ['Movers', 'Car Rental', 'Art and Craft', 'Interior Decorator'],
+  'Holiday': ['Food', 'Shopping', 'Theatres', 'Adventures', 'Tours']
 }
 
 filters_to_tags = {
-  'Food' : ['Mexican', 'Indian', 'Chinese', 'Vegan', 'Continental', 'Seafood', 'No Preference'],
-  'Shopping' : ['Shoes', 'Clothes', 'House Decor', 'Grocery', 'Tech', 'Woodwork', 'No Preference'],
-  'Gaming' : ['Theme Parks', 'Parlors', 'Stores', 'Go-Karts', 'Sport Stadiums', 'Bars', 'No Preference'],
-  'Travel' : ['Flight Booking', 'Tourist Visa', 'Car Rental', 'Local Restaurants', 'Local Shops', 'Airbnb', 'No Preference'],
-  'Volunteering' : ['Local Stores', 'Schools', 'Soup Kitchen', 'Library', 'Clinics', 'No Preference'],
-  'Art and Craft' : ['Pottery', 'Sketching', 'Face Painting', 'Calligraphy', 'No Preference'],
-  'Movies' : ['Theatres', 'Musical', 'Horror', 'Sitcom', 'Romcom', 'Thriller', 'No Preference'],
-  'Minority-Owned' : ['Yes', 'No', 'No Preference'],
-  'Pet-Friendly': ['Fees', 'No Fees', 'No Preference'],
-  'Money Exchange' : ['Minority-Owned', 'Local', 'No Preference'],
-  'Tours' :  ['Minority-Owned', 'Local', 'No Preference'],
+  'Food' : ['Mexican', 'Indian', 'Chinese', 'Vegan', 'Arab', 'Minority-Owned','Pet-Friendly', 'No Preference'],
+  'Shopping' : ['Shoes', 'Clothes', 'Home Decor', 'Grocery', 'Electronics','Minority-Owned','Pet-Friendly', 'No Preference'],
+  'Gaming' : ['Theme Parks', 'Arcade', 'Gaming Stores', 'Go-Karts', 'Sport Stadiums','Pet-Friendly','Minority-Owned', 'Trampoline Park', 'Horseback Riding', 'Sports Bars', 'No Preference'],
+  'Travel' : ['Tourist Visa', 'Car Rental', 'Motel','Minority-Owned','Pet-Friendly', 'No Preference'],
+  'Arts and Craft' : ['Stationery', 'Pottery', 'Art Studio', 'Face Painting','Pet-Friendly','Minority-Owned', 'No Preference'],
+  'Theatres' : ['Movies', 'Musicals','Minority-Owned','Pet-Friendly', 'No Preference'],
+  'Tours' :  ['Guided', 'Minority-Owned', 'No Preference'],
   'Sightseeing' : ['Minority-Owned', 'Local', 'No Preference'],
   }
 
