@@ -1,5 +1,30 @@
 import psycopg2
 # from .connector import connection # Pip install mysql connector.py
+
+occasion_to_filters = {
+  'Birthday': ['Food', 'Shopping', 'Adventures', 'Travel', 'Volunteering', 'Art and Craft'],
+  'Date Night': ['Food', 'Movies', 'Adventures', 'Travel'],
+  'Brunch': ['Food' 'Theatres', 'Pet-Friendly', 'Party'],
+  'Graduation': ['Food', 'Shopping', 'Travel', 'Theatres', 'Volunteering'],
+  'Traveling': ['Food', 'Shopping', 'Theatres',  'Tours', 'Sightseeing'],
+  'Wedding': [ 'Art and Craft', 'Bakery', 'Food', 'Shopping'],
+  'Anniversary': ['Party Halls', 'Party Planners', 'Food', 'Bakery', 'Art and Craft'],
+  'Moving': ['Movers', 'Car Rental', 'Art and Craft', 'Interior Decorator'],
+  'Holiday': ['Food', 'Shopping', 'Theatres', 'Adventures', 'Tours']
+}
+
+filters_to_tags = {
+  'Food' : ['Mexican', 'Indian', 'Chinese', 'Vegan', 'Arab', 'Minority-Owned','Pet-Friendly', 'No Preference'],
+  'Shopping' : ['Shoes', 'Clothes', 'Home Decor', 'Grocery', 'Electronics','Minority-Owned','Pet-Friendly', 'No Preference'],
+  'Gaming' : ['Theme Parks', 'Arcade', 'Gaming Stores', 'Go-Karts', 'Sport Stadiums','Pet-Friendly','Minority-Owned', 'Trampoline Park', 'Horseback Riding', 'Sports Bars', 'No Preference'],
+  'Travel' : ['Tourist Visa', 'Car Rental', 'Motel','Minority-Owned','Pet-Friendly', 'No Preference'],
+  'Arts and Craft' : ['Stationery', 'Pottery', 'Art Studio', 'Face Painting','Pet-Friendly','Minority-Owned', 'No Preference'],
+  'Theatres' : ['Movies', 'Musicals','Minority-Owned','Pet-Friendly', 'No Preference'],
+  'Tours' :  ['Guided', 'Minority-Owned', 'No Preference'],
+  'Sightseeing' : ['Minority-Owned', 'Local', 'No Preference'],
+  }
+
+
 STRING_LENGTH = 100
 PHONE_NUMBER_LENGTH = 15
 ID_SIZE = 11
@@ -58,24 +83,18 @@ def createBuisnessTags():
   connection.commit()
 
 def getOccasions():
-  cursor.execute("SELECT name FROM occasions")
-  results= cursor.fetchall()
-  return list(set([result[0] for result in results]))
+  return list(occasion_to_filters.keys())
 
 def getFilters(occasion):
-  output = {}
-  query = f"SELECT f.id, f.filter from occasionsfilters f, occasions o where o.id=f.occasionid and o.name=\'{occasion}\'"
-  cursor.execute(query)
-  filters= cursor.fetchall()
-  for filter in filters:
-    id,name = filter
-    output[name] = getTags(id)
-  return output
+  filters = {}
+  for filter in occasion_to_filters[occasion]:
+    filters[filter] = filters_to_tags.get(filter,[])
+  return filters
 
-def getTags(filter):
-  cursor.execute(f"SELECT tag from filterTags where filterid='{filter}'")
-  results=cursor.fetchall()
-  return [result[0] for result in results]
+# def getTags(filter):
+#   cursor.execute(f"SELECT tag from filterTags where filterid='{filter}'")
+#   results=cursor.fetchall()
+#   return [result[0] for result in results]
 
 
 def closeConnection():
