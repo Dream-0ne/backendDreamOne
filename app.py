@@ -45,15 +45,13 @@ def businessList(filterlist):
     chosenFilters = filterlist.split(",")
     for i in range (len(chosenFilters)):
         val = chosenFilters[i].split(":")
-        print(val)
         filterMap[val[0]] = val[1:]
-    #occasionlist = mySqlDB.getFilters(occasion)
     # Cross origin issues work around for front-end fetch API calls
     @after_this_request 
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
-    return jsonify(filterMap)
+    return jsonify(mySqlDB.getBusiness(filterMap))
 
 if __name__ == "__main__":
     app.run(host="localhost",port=5000)
