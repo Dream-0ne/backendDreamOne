@@ -45,6 +45,7 @@ def businessList(filterlist):
     chosenFilters = filterlist.split(",")
     for i in range (len(chosenFilters)):
         val = chosenFilters[i].split(":")
+        print(val)
         filterMap[val[0]] = val[1:]
     #occasionlist = mySqlDB.getFilters(occasion)
     # Cross origin issues work around for front-end fetch API calls
