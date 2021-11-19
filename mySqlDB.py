@@ -2,21 +2,20 @@ import psycopg2
 # from .connector import connection # Pip install mysql connector.py
 
 occasion_to_filters = {
-  'Birthday': ['Food', 'Shopping', 'Adventures', 'Travel', 'Volunteering', 'Art and Craft'],
-  'Date Night': ['Food', 'Movies', 'Adventures', 'Travel'],
-  'Brunch': ['Food' 'Theatres', 'Pet-Friendly', 'Party'],
-  'Graduation': ['Food', 'Shopping', 'Travel', 'Theatres', 'Volunteering'],
+  'Birthday': ['Food', 'Shopping', 'Adventures', 'Travel', 'Arts and Craft'],
+  'Date Night': ['Food', 'Theatres', 'Adventures', 'Travel'],
+  'Brunch': ['Food', 'Theatres', 'Shopping'],
+  'Graduation': ['Food', 'Shopping', 'Travel', 'Theatres'],
   'Traveling': ['Food', 'Shopping', 'Theatres',  'Tours', 'Sightseeing'],
-  'Wedding': [ 'Art and Craft', 'Bakery', 'Food', 'Shopping'],
-  'Anniversary': ['Party Halls', 'Party Planners', 'Food', 'Bakery', 'Art and Craft'],
-  'Moving': ['Movers', 'Car Rental', 'Art and Craft', 'Interior Decorator'],
+  'Wedding': [ 'Arts and Craft','Food', 'Shopping'],
   'Holiday': ['Food', 'Shopping', 'Theatres', 'Adventures', 'Tours']
 }
 
+
 filters_to_tags = {
-  'Food' : ['Mexican', 'Indian', 'Chinese', 'Vegan', 'Arab', 'Minority-Owned','Pet-Friendly', 'No Preference'],
+  'Food' : ['Mexican', 'Indian', 'Chinese', 'Vegan', 'Arabic', 'Minority-Owned','Pet-Friendly', 'No Preference'],
   'Shopping' : ['Shoes', 'Clothes', 'Home Decor', 'Grocery', 'Electronics','Minority-Owned','Pet-Friendly', 'No Preference'],
-  'Gaming' : ['Theme Parks', 'Arcade', 'Gaming Stores', 'Go-Karts', 'Sport Stadiums','Pet-Friendly','Minority-Owned', 'Trampoline Park', 'Horseback Riding', 'Sports Bars', 'No Preference'],
+  'Adventures' : ['Theme Parks', 'Arcade', 'Gaming Stores', 'Go-Karts', 'Sport Stadiums','Pet-Friendly','Minority-Owned', 'Trampoline Park', 'Horseback Riding', 'Sports Bars', 'No Preference'],
   'Travel' : ['Tourist Visa', 'Car Rental', 'Motel','Minority-Owned','Pet-Friendly', 'No Preference'],
   'Arts and Craft' : ['Stationery', 'Pottery', 'Art Studio', 'Face Painting','Pet-Friendly','Minority-Owned', 'No Preference'],
   'Theatres' : ['Movies', 'Musicals','Minority-Owned','Pet-Friendly', 'No Preference'],
@@ -96,6 +95,8 @@ def getFilters(occasion):
 #   results=cursor.fetchall()
 #   return [result[0] for result in results]
 
+def getBusiness(chosen_filter_map):
+  return chosen_filter_map
 
 def closeConnection():
   connection.close()
