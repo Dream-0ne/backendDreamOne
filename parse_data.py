@@ -1,4 +1,4 @@
-def combine(data):#{tag: {name: "", tag="", address='',long=0.0,lat=0.0,photo_ref=""}}
+def combine(data):#{tag: [{name: "", tag="", address='',long=0.0,lat=0.0,photo_ref=""}, ...]}
     businesses = {} # {'name':{address="",tags=[], long = 0.0, lat = 0.0}}
     for tag in data:
         for business in data[tag]:
