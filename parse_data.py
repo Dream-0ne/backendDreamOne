@@ -8,4 +8,4 @@ def combine(data):#{tag: {name: "", tag="", address='',long=0.0,lat=0.0,photo_re
                 business['tags'] = [business['tag']]
                 del business['tag']
                 businesses[business['name']] = business
-    return business
+    return businesses
