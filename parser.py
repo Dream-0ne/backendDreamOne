@@ -36,5 +36,4 @@ def scraper():
             tag_entry["bus"] = currList
             businessData.append(tag_entry)
     return businessData
-if __name__ == "main":
-    scraper()
+print(scraper())
