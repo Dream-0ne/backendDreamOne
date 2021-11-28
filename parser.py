@@ -39,6 +39,7 @@ def scraper():
             businessData.append(tag_entry)
     return businessData
 
+    
 def combine_data(data):
     combined = dict()
     for entry in data:
