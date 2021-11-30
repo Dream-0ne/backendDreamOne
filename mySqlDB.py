@@ -96,7 +96,18 @@ def getFilters(occasion):
 #   return [result[0] for result in results]
 
 def getBusiness(chosen_filter_map):
-  return chosen_filter_map
+  filtered_results = []
+  cursor.execute(f"SELECT * from businesses")
+  results=cursor.fetchall()
+  for result in results:
+    filter_tag_list = result[5]
+    for filter_tag in filter_tag_list:
+      filter,tag = filter_tag[0].lower(), filter_tag[1].lower()
+      if tag in chosen_filter_map.get(filter,[]):
+        filtered_results.append(result)
+        break
+
+  return filtered_results
 
 def closeConnection():
   connection.close()

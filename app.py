@@ -40,7 +40,7 @@ For example: if the users chooses food and shopping and adds requirements it bec
 '''
 @app.route('/business/<filterlist>', methods=['GET'])
 def businessList(filterlist):
-    print(filterlist)
+    filterlist = filterlist.lower()
     filterMap = {}
     chosenFilters = filterlist.split(",")
     for i in range (len(chosenFilters)):
