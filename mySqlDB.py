@@ -128,7 +128,7 @@ def get_distance():
   return 0
 
 def get_image(ref):
-  return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference={ref}&key=AIzaSyB2DhfwGMnFlb3US679PZirAsZyQeLoUiU"
+  return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photo_reference={ref}&key=AIzaSyB2DhfwGMnFlb3US679PZirAsZyQeLoUiU"
 
 def closeConnection():
   connection.close()
