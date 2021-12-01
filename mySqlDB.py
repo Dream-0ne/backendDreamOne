@@ -101,13 +101,34 @@ def getBusiness(chosen_filter_map):
   results=cursor.fetchall()
   for result in results:
     filter_tag_list = result[5]
+    filter_dict= {}
     for filter_tag in filter_tag_list:
       filter,tag = filter_tag[0].lower(), filter_tag[1].lower()
-      if tag in chosen_filter_map.get(filter,[]):
-        filtered_results.append(result)
+
+      if filter in chosen_filter_map and tag in chosen_filter_map[filter]:
+        for f_t in filter_tag_list:
+          if f_t[0] in filter_dict:
+            if f_t[1] not in filter_dict[f_t[0]]:
+              filter_dict[f_t[0]].append(f_t[1])
+          else:
+            filter_dict[f_t[0]] = ([f_t[1]])
+        
+        bus_reformat = {}
+        bus_reformat['name'] = result[0]
+        bus_reformat['photo_ref'] = get_image(result[1])
+        bus_reformat['distance'] = get_distance()
+        bus_reformat['address'] = result[4]
+        bus_reformat['tags'] = filter_dict
+        filtered_results.append(bus_reformat)
         break
 
   return filtered_results
+
+def get_distance():
+  return 0
+
+def get_image(ref):
+  return ref
 
 def closeConnection():
   connection.close()

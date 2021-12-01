@@ -33,10 +33,13 @@ def scraper():
                     entry["longtitude"] = val["geometry"]["location"]["lng"]
                     entry["address"] = val["formatted_address"]
                     currList.append(entry)
+                    if entry['name'] == "QDOBA Mexican Eats":
+                        print(entry)
                 except:
                     continue
             tag_entry["bus"] = currList
             businessData.append(tag_entry)
+    print(businessData)
     return businessData
 
     
@@ -55,6 +58,8 @@ def combine_data(data):
 def push_to_db(data):
     connection = psycopg2.connect('postgres://ocgorhxfhtqouz:0b5ab52acd79bde38474f47067a4b7b91c48e21298e5592ced499cd391f423d0@ec2-34-202-66-20.compute-1.amazonaws.com:5432/d381s47af7e19t')
     cursor = connection.cursor()
+    cursor.execute('Create table businesses (name text, photo_ref text, latitude text, longtitude text, address text, filter_tag text[][2])')
+    connection.commit()
     for bus_name in data:
         bus = data[bus_name]
         postgres_insert_query = """ INSERT INTO businesses (name, photo_ref, latitude, longtitude, address, filter_tag) VALUES (%s,%s,%s,%s,%s,%s)"""
