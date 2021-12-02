@@ -1,11 +1,9 @@
 import requests
-import json
+from requests import api
 from requests.api import request
 import psycopg2
 
 def scraper():
-    connection = psycopg2.connect('postgres://ocgorhxfhtqouz:0b5ab52acd79bde38474f47067a4b7b91c48e21298e5592ced499cd391f423d0@ec2-34-202-66-20.compute-1.amazonaws.com:5432/d381s47af7e19t')
-    cursor = connection.cursor()
     data = []
     businessData = []
     mainDict = [{"Filter" : "Food" , "Tags": ["Mexican","Indian","Chinese","Vegan","Arabic"], "Query": ["Mexican Food", "Indian Food", "Chinese Food", "Vegan Food",'Arabic Food']}, 
@@ -18,9 +16,25 @@ def scraper():
     {"Filter": "Sightseeing", "Tags": ["Local"], "Query":["Local Attractions"]}]
     for category in mainDict:
         for i in range(len(category["Tags"])):
-            tagList = []
-            response = requests.get("https://maps.googleapis.com/maps/api/place/textsearch/json?query="+category["Query"][i]+"&location=43.070134,-89.390165&key=AIzaSyB2DhfwGMnFlb3US679PZirAsZyQeLoUiU&")
-            data = response.json()['results']
+            data = []
+            ct = 0
+            next_token = "begin"
+            try:
+                while (next_token != None and ct < 200):
+                    # print(ct)
+                    api_uri = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+category["Query"][i]+"&location=43.070134,-89.390165&key=AIzaSyB2DhfwGMnFlb3US679PZirAsZyQeLoUiU&"
+                    if next_token != "begin":
+                        api_uri += f"&next_page_token={next_token}"
+                    response_json = requests.get(api_uri).json()
+                    if "next_page_token" in response_json:
+                        next_token = response_json["next_page_token"]
+                        ct += 1
+                    else:
+                        next_token = None
+                    data.extend(response_json['results'])
+            except:
+                pass
+            
             currList = []
             tag_entry = {}
             tag_entry["filter_tag"] = [category['Filter'],category["Tags"][i]]
@@ -33,13 +47,10 @@ def scraper():
                     entry["longtitude"] = val["geometry"]["location"]["lng"]
                     entry["address"] = val["formatted_address"]
                     currList.append(entry)
-                    if entry['name'] == "QDOBA Mexican Eats":
-                        print(entry)
                 except:
                     continue
             tag_entry["bus"] = currList
             businessData.append(tag_entry)
-    print(businessData)
     return businessData
 
     
@@ -68,4 +79,5 @@ def push_to_db(data):
         connection.commit()
 
 if __name__ == "__main__":
+    # print(combine_data(scraper()))
     push_to_db((combine_data(scraper())))
