@@ -96,7 +96,39 @@ def getFilters(occasion):
 #   return [result[0] for result in results]
 
 def getBusiness(chosen_filter_map):
-  return chosen_filter_map
+  filtered_results = []
+  cursor.execute(f"SELECT * from businesses")
+  results=cursor.fetchall()
+  for result in results:
+    filter_tag_list = result[5]
+    filter_dict= {}
+    for filter_tag in filter_tag_list:
+      filter,tag = filter_tag[0].lower(), filter_tag[1].lower()
+
+      if filter in chosen_filter_map and tag in chosen_filter_map[filter]:
+        for f_t in filter_tag_list:
+          if f_t[0] in filter_dict:
+            if f_t[1] not in filter_dict[f_t[0]]:
+              filter_dict[f_t[0]].append(f_t[1])
+          else:
+            filter_dict[f_t[0]] = ([f_t[1]])
+        
+        bus_reformat = {}
+        bus_reformat['name'] = result[0]
+        bus_reformat['photo_ref'] = get_image(result[1])
+        bus_reformat['distance'] = get_distance()
+        bus_reformat['address'] = result[4]
+        bus_reformat['tags'] = filter_dict
+        filtered_results.append(bus_reformat)
+        break
+
+  return filtered_results
+
+def get_distance():
+  return 0
+
+def get_image(ref):
+  return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photo_reference={ref}&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
 
 def closeConnection():
   connection.close()
