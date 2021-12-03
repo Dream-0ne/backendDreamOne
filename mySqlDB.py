@@ -13,14 +13,14 @@ occasion_to_filters = {
 
 
 filters_to_tags = {
-  'Food' : ['Mexican', 'Indian', 'Chinese', 'Vegan', 'Arabic', 'Minority-Owned','Pet-Friendly', 'No Preference'],
-  'Shopping' : ['Shoes', 'Clothes', 'Home Decor', 'Grocery', 'Electronics','Minority-Owned','Pet-Friendly', 'No Preference'],
-  'Adventures' : ['Theme Parks', 'Arcade', 'Gaming Stores', 'Go-Karts', 'Sport Stadiums','Pet-Friendly','Minority-Owned', 'Trampoline Park', 'Horseback Riding', 'Sports Bars', 'No Preference'],
-  'Travel' : ['Tourist Visa', 'Car Rental', 'Motel','Minority-Owned','Pet-Friendly', 'No Preference'],
-  'Arts and Craft' : ['Stationery', 'Pottery', 'Art Studio', 'Face Painting','Pet-Friendly','Minority-Owned', 'No Preference'],
-  'Theatres' : ['Movies', 'Musicals','Minority-Owned','Pet-Friendly', 'No Preference'],
-  'Tours' :  ['Guided', 'Minority-Owned', 'No Preference'],
-  'Sightseeing' : ['Minority-Owned', 'Local', 'No Preference'],
+  'Food' : ['Mexican', 'Indian', 'Chinese', 'Vegan', 'Arabic', 'Minority-Owned','Pet-Friendly'],
+  'Shopping' : ['Shoes', 'Clothes', 'Home Decor', 'Grocery', 'Electronics','Minority-Owned','Pet-Friendly'],
+  'Adventures' : ['Theme Parks', 'Arcade', 'Gaming Stores', 'Go-Karts', 'Sport Stadiums','Pet-Friendly','Minority-Owned', 'Trampoline Park', 'Horseback Riding', 'Sports Bars'],
+  'Travel' : ['Tourist Visa', 'Car Rental', 'Motel','Minority-Owned','Pet-Friendly'],
+  'Arts and Craft' : ['Stationery', 'Pottery', 'Art Studio', 'Face Painting','Pet-Friendly','Minority-Owned'],
+  'Theatres' : ['Movies', 'Musicals','Minority-Owned','Pet-Friendly'],
+  'Tours' :  ['Guided', 'Minority-Owned'],
+  'Sightseeing' : ['Minority-Owned', 'Local'],
   }
 
 
