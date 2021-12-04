@@ -55,5 +55,9 @@ def businessList(filterlist):
         return response
     return jsonify(mySqlDB.getBusiness(filterMap))
 
+@app.route('/businessinfo/<name>', methods=['GET'])
+def businessinfo(name):
+    return jsonify(mySqlDB.get_business_info(name))
+
 if __name__ == "__main__":
     app.run(host="localhost",port=5000)

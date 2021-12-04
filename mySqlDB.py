@@ -1,3 +1,4 @@
+from flask.json import tag
 import psycopg2
 # from .connector import connection # Pip install mysql connector.py
 
@@ -123,6 +124,28 @@ def getBusiness(chosen_filter_map):
         break
 
   return filtered_results
+
+def get_business_info(name):
+  bus = {}
+  cursor.execute(f"SELECT * from businesses where businesses.name='{name}'")
+  result=cursor.fetchone()
+  tags = {}
+  filter_tag_list = result[5]
+  print(filter_tag_list)
+  for filter_tag in filter_tag_list:
+    if filter_tag[0] in tags and filter_tag[1] not in tags[filter_tag[0]]:
+      tags[filter_tag[0]].append(filter_tag[1])
+    else:
+      tags[filter_tag[0]] = [filter_tag[1]]
+  bus['name'] = result[0]
+  bus['photo_ref'] = get_image(result[1])
+  bus['distance'] = get_distance()
+  bus['address'] = result[4]
+  bus['tags'] = tags
+
+  return bus
+
+  
 
 def get_distance():
   return 0
