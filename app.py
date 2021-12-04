@@ -42,10 +42,12 @@ For example: if the users chooses food and shopping and adds requirements it bec
 def businessList(filterlist):
     filterlist = filterlist.lower()
     filterMap = {}
-    chosenFilters = filterlist.split(",")
-    for i in range (len(chosenFilters)):
-        val = chosenFilters[i].split(":")
-        filterMap[val[0]] = val[1:]
+    chosenFilters = filterlist.split(":")
+    for i in range(len(chosenFilters)//2):
+        if chosenFilters[i * 2] in filterMap:
+            filterMap[chosenFilters[i*2]].append(chosenFilters[i*2 + 1])
+        else:
+            filterMap[chosenFilters[i*2]] = [chosenFilters[i*2 + 1]]
     # Cross origin issues work around for front-end fetch API calls
     @after_this_request 
     def add_header(response):
