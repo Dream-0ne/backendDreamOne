@@ -1,5 +1,6 @@
 from flask.json import tag
 import psycopg2
+import requests
 # from .connector import connection # Pip install mysql connector.py
 
 occasion_to_filters = {
@@ -96,7 +97,7 @@ def getFilters(occasion):
 #   results=cursor.fetchall()
 #   return [result[0] for result in results]
 
-def getBusiness(chosen_filter_map):
+def getBusiness(chosen_filter_map, user_lat, user_long):
   filtered_results = []
   cursor.execute(f"SELECT * from businesses")
   results=cursor.fetchall()
@@ -113,17 +114,16 @@ def getBusiness(chosen_filter_map):
               filter_dict[f_t[0]].append(f_t[1])
           else:
             filter_dict[f_t[0]] = ([f_t[1]])
-        
         bus_reformat = {}
         bus_reformat['name'] = result[0]
         bus_reformat['photo_ref'] = get_image(result[1])
-        bus_reformat['distance'] = get_distance()
+        bus_reformat['distance'] = get_distance(user_lat,user_long,result[2],result[3])
         bus_reformat['address'] = result[4]
         bus_reformat['tags'] = filter_dict
         filtered_results.append(bus_reformat)
         break
 
-  return filtered_results
+  return sorted(filtered_results,key=lambda x: x['distance'])
 
 def get_business_info(name):
   bus = {}
@@ -131,7 +131,6 @@ def get_business_info(name):
   result=cursor.fetchone()
   tags = {}
   filter_tag_list = result[5]
-  print(filter_tag_list)
   for filter_tag in filter_tag_list:
     if filter_tag[0] in tags and filter_tag[1] not in tags[filter_tag[0]]:
       tags[filter_tag[0]].append(filter_tag[1])
@@ -147,8 +146,14 @@ def get_business_info(name):
 
   
 
-def get_distance():
-  return 0
+def get_distance(user_lat,user_long,bus_lat,bus_long):
+  # try:
+  uri = f"https://maps.googleapis.com/maps/api/distancematrix/json?destinations={bus_lat}%2C{bus_long}&origins={user_lat}%2C{user_long}&units=imperial&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
+  response_json = requests.get(uri).json()
+  # print(response_json)
+  return response_json['rows'][0]['elements'][0]['distance']['text']
+  # except:
+  #   return "Error"
 
 def get_image(ref):
   return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=700&photo_reference={ref}&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
