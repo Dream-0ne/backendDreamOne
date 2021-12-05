@@ -1,14 +1,12 @@
 from flask import Flask
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from flask import request, jsonify, make_response,after_this_request
 import mySqlDB
-import json
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 change = False
 
 mySqlDB.connect()
-#mySqlDB.createTables()
     
 
 @app.route('/occasions', methods=['GET'])

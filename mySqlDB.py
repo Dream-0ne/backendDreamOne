@@ -1,7 +1,6 @@
 from flask.json import tag
 import psycopg2
 import requests
-# from .connector import connection # Pip install mysql connector.py
 
 occasion_to_filters = {
   'Birthday': ['Food', 'Shopping', 'Adventures', 'Travel', 'Arts and Craft'],
@@ -32,12 +31,6 @@ ID_SIZE = 11
 connection = None
 cursor = None
 
-def drop_create():
-  global cursor
-  tables = ['occasions','occasionfilters','filtertags','buisness','buisnesstags']
-  for table in tables:
-    cursor.execute(f"Drop table if exists {table}")
-  createTables()
 
 def connect():
   global connection
@@ -46,42 +39,6 @@ def connect():
   )
   cursor = connection.cursor()
 
-def createTables():
-  createOccasions()
-  createOccasionsFilters()
-  createFiltersTags()
-  createBuisness()
-  createBuisnessTags()
-
-def createOccasions():
-  occasions = ["Birthday","Nightout","Party","Date","Exploring"]
-  cursor.execute(f"CREATE table if not exists occasions (id int, name text)")
-  for i in range(5):
-    sql = f"INSERT INTO occasions(id,name) VALUES ({i},'{occasions[i]}');"
-    cursor.execute(sql)
-  connection.commit()
-
-def createOccasionsFilters():
-  filters = ['Shopping','Events']
-  idCount = 3
-  for i in range(len(filters)):
-    postgres_insert_query = """ INSERT INTO occasionsfilters (filter, id, occasionid) VALUES (%s,%s,%s)"""
-    record_to_insert = (filters[i], idCount, 1)
-    cursor.execute(postgres_insert_query, record_to_insert)
-    idCount+=1
-  connection.commit()
-
-def createFiltersTags():
-  cursor.execute(f"CREATE table if not exists filterTags (filterid integer, tag text)")
-  connection.commit()
-
-def createBuisness():
-  cursor.execute(f"CREATE table if not exists buisness ( name text, phone text, address TEXT)")
-  connection.commit()
-
-def createBuisnessTags():
-  cursor.execute(f"CREATE table if not exists buisnesstags (buisnessid integer, filter text, tag text)")
-  connection.commit()
 
 def getOccasions():
   return list(occasion_to_filters.keys())
@@ -91,11 +48,6 @@ def getFilters(occasion):
   for filter in occasion_to_filters[occasion]:
     filters[filter] = filters_to_tags.get(filter,[])
   return filters
-
-# def getTags(filter):
-#   cursor.execute(f"SELECT tag from filterTags where filterid='{filter}'")
-#   results=cursor.fetchall()
-#   return [result[0] for result in results]
 
 def getBusiness(chosen_filter_map, user_lat, user_long):
   filtered_results = []
@@ -147,13 +99,12 @@ def get_business_info(name):
   
 
 def get_distance(user_lat,user_long,bus_lat,bus_long):
-  # try:
-  uri = f"https://maps.googleapis.com/maps/api/distancematrix/json?destinations={bus_lat}%2C{bus_long}&origins={user_lat}%2C{user_long}&units=imperial&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
-  response_json = requests.get(uri).json()
-  # print(response_json)
-  return response_json['rows'][0]['elements'][0]['distance']['text']
-  # except:
-  #   return "Error"
+  try:
+    uri = f"https://maps.googleapis.com/maps/api/distancematrix/json?destinations={bus_lat}%2C{bus_long}&origins={user_lat}%2C{user_long}&units=imperial&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
+    response_json = requests.get(uri).json()
+    return response_json['rows'][0]['elements'][0]['distance']['text']
+  except:
+    return "Error"
 
 def get_image(ref):
   return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=700&photo_reference={ref}&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
