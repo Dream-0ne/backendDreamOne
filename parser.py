@@ -20,9 +20,8 @@ def scraper():
             ct = 0
             next_token = "begin"
             try:
-                while (next_token != None and ct < 200):
-                    # print(ct)
-                    api_uri = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+category["Query"][i]+"&location=43.070134,-89.390165&key=AIzaSyB2DhfwGMnFlb3US679PZirAsZyQeLoUiU&"
+                while (next_token != None and ct < 3):
+                    api_uri = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+category["Query"][i]+"&location=43.070134,-89.390165&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
                     if next_token != "begin":
                         api_uri += f"&next_page_token={next_token}"
                     response_json = requests.get(api_uri).json()
@@ -59,7 +58,7 @@ def combine_data(data):
     for entry in data:
         filter_tag = entry['filter_tag']
         for bus in entry['bus']:
-            if bus['name'] in combined:
+            if bus['name'] in combined and filter_tag not in combined[bus['name']]['filter_tag']:
                 combined[bus['name']]['filter_tag'].append(filter_tag)
             else:
                 combined[bus['name']] = bus

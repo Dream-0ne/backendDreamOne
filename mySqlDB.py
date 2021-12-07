@@ -1,5 +1,6 @@
+from flask.json import tag
 import psycopg2
-# from .connector import connection # Pip install mysql connector.py
+import requests
 
 occasion_to_filters = {
   'Birthday': ['Food', 'Shopping', 'Adventures', 'Travel', 'Arts and Craft'],
@@ -30,12 +31,6 @@ ID_SIZE = 11
 connection = None
 cursor = None
 
-def drop_create():
-  global cursor
-  tables = ['occasions','occasionfilters','filtertags','buisness','buisnesstags']
-  for table in tables:
-    cursor.execute(f"Drop table if exists {table}")
-  createTables()
 
 def connect():
   global connection
@@ -44,42 +39,6 @@ def connect():
   )
   cursor = connection.cursor()
 
-def createTables():
-  createOccasions()
-  createOccasionsFilters()
-  createFiltersTags()
-  createBuisness()
-  createBuisnessTags()
-
-def createOccasions():
-  occasions = ["Birthday","Nightout","Party","Date","Exploring"]
-  cursor.execute(f"CREATE table if not exists occasions (id int, name text)")
-  for i in range(5):
-    sql = f"INSERT INTO occasions(id,name) VALUES ({i},'{occasions[i]}');"
-    cursor.execute(sql)
-  connection.commit()
-
-def createOccasionsFilters():
-  filters = ['Shopping','Events']
-  idCount = 3
-  for i in range(len(filters)):
-    postgres_insert_query = """ INSERT INTO occasionsfilters (filter, id, occasionid) VALUES (%s,%s,%s)"""
-    record_to_insert = (filters[i], idCount, 1)
-    cursor.execute(postgres_insert_query, record_to_insert)
-    idCount+=1
-  connection.commit()
-
-def createFiltersTags():
-  cursor.execute(f"CREATE table if not exists filterTags (filterid integer, tag text)")
-  connection.commit()
-
-def createBuisness():
-  cursor.execute(f"CREATE table if not exists buisness ( name text, phone text, address TEXT)")
-  connection.commit()
-
-def createBuisnessTags():
-  cursor.execute(f"CREATE table if not exists buisnesstags (buisnessid integer, filter text, tag text)")
-  connection.commit()
 
 def getOccasions():
   return list(occasion_to_filters.keys())
@@ -90,12 +49,7 @@ def getFilters(occasion):
     filters[filter] = filters_to_tags.get(filter,[])
   return filters
 
-# def getTags(filter):
-#   cursor.execute(f"SELECT tag from filterTags where filterid='{filter}'")
-#   results=cursor.fetchall()
-#   return [result[0] for result in results]
-
-def getBusiness(chosen_filter_map):
+def getBusiness(chosen_filter_map, user_lat, user_long):
   filtered_results = []
   cursor.execute(f"SELECT * from businesses")
   results=cursor.fetchall()
@@ -112,23 +66,48 @@ def getBusiness(chosen_filter_map):
               filter_dict[f_t[0]].append(f_t[1])
           else:
             filter_dict[f_t[0]] = ([f_t[1]])
-        
         bus_reformat = {}
         bus_reformat['name'] = result[0]
         bus_reformat['photo_ref'] = get_image(result[1])
-        bus_reformat['distance'] = get_distance()
+        bus_reformat['distance'] = get_distance(user_lat,user_long,result[2],result[3])
         bus_reformat['address'] = result[4]
         bus_reformat['tags'] = filter_dict
         filtered_results.append(bus_reformat)
         break
 
-  return filtered_results
+  return sorted(filtered_results,key=lambda x: x['distance'])
 
-def get_distance():
-  return 0
+def get_business_info(name):
+  bus = {}
+  cursor.execute(f"SELECT * from businesses where businesses.name='{name}'")
+  result=cursor.fetchone()
+  tags = {}
+  filter_tag_list = result[5]
+  for filter_tag in filter_tag_list:
+    if filter_tag[0] in tags and filter_tag[1] not in tags[filter_tag[0]]:
+      tags[filter_tag[0]].append(filter_tag[1])
+    else:
+      tags[filter_tag[0]] = [filter_tag[1]]
+  bus['name'] = result[0]
+  bus['photo_ref'] = get_image(result[1])
+  bus['distance'] = get_distance()
+  bus['address'] = result[4]
+  bus['tags'] = tags
+
+  return bus
+
+  
+
+def get_distance(user_lat,user_long,bus_lat,bus_long):
+  try:
+    uri = f"https://maps.googleapis.com/maps/api/distancematrix/json?destinations={bus_lat}%2C{bus_long}&origins={user_lat}%2C{user_long}&units=imperial&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
+    response_json = requests.get(uri).json()
+    return response_json['rows'][0]['elements'][0]['distance']['text']
+  except:
+    return "Error"
 
 def get_image(ref):
-  return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=100&photo_reference={ref}&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
+  return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=700&photo_reference={ref}&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
 
 def closeConnection():
   connection.close()

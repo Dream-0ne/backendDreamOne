@@ -1,14 +1,12 @@
 from flask import Flask
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 from flask import request, jsonify, make_response,after_this_request
 import mySqlDB
-import json
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 change = False
 
 mySqlDB.connect()
-#mySqlDB.createTables()
     
 
 @app.route('/occasions', methods=['GET'])
@@ -38,8 +36,8 @@ Based on the passed in parameters it will pass in businesses that fit that crite
 Filterlist parameter format -  Filter1:requirement1,filter2,requirement2
 For example: if the users chooses food and shopping and adds requirements it becomes Food:Mexican,Shopping:thriftstore for filterlist
 '''
-@app.route('/business/<filterlist>', methods=['GET'])
-def businessList(filterlist):
+@app.route('/business/<lat>/<long>/<filterlist>', methods=['GET'])
+def businessList(filterlist,lat,long):
     filterlist = filterlist.lower()
     filterMap = {}
     chosenFilters = filterlist.split(":")
@@ -53,7 +51,11 @@ def businessList(filterlist):
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
-    return jsonify(mySqlDB.getBusiness(filterMap))
+    return jsonify(mySqlDB.getBusiness(filterMap,lat,long))
+
+@app.route('/businessinfo/<name>', methods=['GET'])
+def businessinfo(name):
+    return jsonify(mySqlDB.get_business_info(name))
 
 if __name__ == "__main__":
     app.run(host="localhost",port=5000)
