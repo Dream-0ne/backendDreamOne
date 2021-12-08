@@ -55,7 +55,7 @@ def businessList(filterlist,lat,long):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
     result = jsonify(mySqlDB.getBusiness(filterMap,lat,long))
-    cache[(filterlist,lat,long)] = result
+    my_cache[(filterlist,lat,long)] = result
     return result
 
 @app.route('/businessinfo/<name>', methods=['GET'])
