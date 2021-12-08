@@ -38,7 +38,7 @@ For example: if the users chooses food and shopping and adds requirements it bec
 '''
 @app.route('/business/<lat>/<long>/<filterlist>', methods=['GET'])
 def businessList(filterlist,lat,long):
-    if (filterlist,lat,long) in my_cache:
+    if filterlist+lat+long in my_cache:
         print("cached")
         return my_cache[(filterlist,lat,long)]
     filterlist = filterlist.lower()
@@ -55,7 +55,7 @@ def businessList(filterlist,lat,long):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
     result = jsonify(mySqlDB.getBusiness(filterMap,lat,long))
-    my_cache[(filterlist,lat,long)] = result
+    my_cache[filterlist+lat+long] = result
     return result
 
 @app.route('/businessinfo/<name>', methods=['GET'])
