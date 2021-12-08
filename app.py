@@ -5,7 +5,7 @@ import mySqlDB
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 change = False
-cache = {}
+my_cache = {}
 mySqlDB.connect()
     
 
@@ -38,8 +38,9 @@ For example: if the users chooses food and shopping and adds requirements it bec
 '''
 @app.route('/business/<lat>/<long>/<filterlist>', methods=['GET'])
 def businessList(filterlist,lat,long):
-    if (filterlist,lat,long) in cache:
-        return cache[(filterlist,lat,long)]
+    if (filterlist,lat,long) in my_cache:
+        print("cached")
+        return my_cache[(filterlist,lat,long)]
     filterlist = filterlist.lower()
     filterMap = {}
     chosenFilters = filterlist.split(":")
