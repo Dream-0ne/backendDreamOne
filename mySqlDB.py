@@ -95,10 +95,7 @@ def get_distance_single(bus):
 
 def get_distance_multi(filtered_data):
   result =[]
-  with ThreadPoolExecutor(max_workers=5) as exe:
-      exe.submit(get_distance_single,2)
-        
-      # Maps the method 'cube' with a list of values.
+  with ThreadPoolExecutor() as exe:
       result = exe.map(get_distance_single,filtered_data)
     
   return result
