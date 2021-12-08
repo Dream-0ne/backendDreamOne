@@ -100,14 +100,14 @@ def get_business_info(name):
 
 def get_distance(user_lat,user_long,bus_lat,bus_long):
   try:
-    uri = f"https://maps.googleapis.com/maps/api/distancematrix/json?destinations={bus_lat}%2C{bus_long}&origins={user_lat}%2C{user_long}&units=imperial&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
+    uri = f"https://maps.googleapis.com/maps/api/distancematrix/json?destinations={bus_lat}%2C{bus_long}&origins={user_lat}%2C{user_long}&units=imperial&key=AIzaSyC41yIx7G6iH5bPOHebUOf1t1D4fB8Iinc"
     response_json = requests.get(uri).json()
     return response_json['rows'][0]['elements'][0]['distance']['text']
   except:
     return "Error"
 
 def get_image(ref):
-  return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=700&photo_reference={ref}&key=AIzaSyBDTq_vvDxnY6vLW2l90dRE-Ro_nl04evc"
+  return f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=700&photo_reference={ref}&key=AIzaSyC41yIx7G6iH5bPOHebUOf1t1D4fB8Iinc"
 
 def closeConnection():
   connection.close()
