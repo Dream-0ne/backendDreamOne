@@ -40,6 +40,7 @@ For example: if the users chooses food and shopping and adds requirements it bec
 def businessList(filterlist,lat,long):
     if filterlist+lat+long in my_cache:
         print("cached")
+        exit(1)
         return my_cache[(filterlist,lat,long)]
     filterlist = filterlist.lower()
     filterMap = {}
@@ -55,6 +56,9 @@ def businessList(filterlist,lat,long):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
     result = jsonify(mySqlDB.getBusiness(filterMap,lat,long))
+    print("keys:" + str(my_cache.keys()))
+    print("value: " + filterlist+lat+long)
+
     my_cache[filterlist+lat+long] = result
     return result
 
