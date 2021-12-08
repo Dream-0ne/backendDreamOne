@@ -5,7 +5,7 @@ import mySqlDB
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 change = False
-
+cache = {}
 mySqlDB.connect()
     
 
@@ -38,6 +38,8 @@ For example: if the users chooses food and shopping and adds requirements it bec
 '''
 @app.route('/business/<lat>/<long>/<filterlist>', methods=['GET'])
 def businessList(filterlist,lat,long):
+    if (filterlist,lat,long) in cache:
+        return cache[(filterlist,lat,long)]
     filterlist = filterlist.lower()
     filterMap = {}
     chosenFilters = filterlist.split(":")
@@ -51,7 +53,9 @@ def businessList(filterlist,lat,long):
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
-    return jsonify(mySqlDB.getBusiness(filterMap,lat,long))
+    result = jsonify(mySqlDB.getBusiness(filterMap,lat,long))
+    cache[(filterlist,lat,long)] = result
+    return result
 
 @app.route('/businessinfo/<name>', methods=['GET'])
 def businessinfo(name):
