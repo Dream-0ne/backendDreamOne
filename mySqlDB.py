@@ -90,7 +90,7 @@ def cmp_dis(bus1):
   dis1 = bus1['distance'].split(" ")
   num_1 = float(dis1[0])
   unit_1 = dis1[1]
-  if num_1 == 'mi':
+  if unit_1 == 'mi':
     total += 1000000
   return total + num_1
 
