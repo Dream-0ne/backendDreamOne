@@ -82,22 +82,18 @@ def getBusiness(chosen_filter_map, user_lat, user_long):
         filtered_results.append(bus_reformat)
         break
 
-  return sorted(get_distance_multi(filtered_results), key=lambda x:x['distance'])
+  return sorted(get_distance_multi(filtered_results), key=cmp_dis)
 
 
-def cmp(bus1,bus2):
+def cmp_dis(bus1):
+  total = 0
   dis1 = bus1['distance'].split(" ")
   num_1 = float(dis1[0])
   unit_1 = dis1[1]
-  dis2 = bus2['distance']
-  num_2 = float(dis1[0])
-  unit_2 = dis1[1]
-  if unit_1 == unit_2:
-    return num_1 - num_2
-  else:
-    if unit_1 == 'ft':
-      return -1
-    return 1
+  if num_1 == 'mi':
+    total += 1000000
+  return total + num_1
+
     
 
 def get_distance_single(bus):
