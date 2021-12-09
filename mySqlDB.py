@@ -1,6 +1,7 @@
 from flask.json import tag
 import psycopg2
 import requests
+from concurrent.futures import ThreadPoolExecutor
 
 occasion_to_filters = {
   'Birthday': ['Food', 'Shopping', 'Adventures', 'Travel', 'Arts and Craft'],
@@ -30,6 +31,9 @@ PHONE_NUMBER_LENGTH = 15
 ID_SIZE = 11
 connection = None
 cursor = None
+
+my_cache = {}
+cache_set = set()
 
 
 def connect():
@@ -69,13 +73,32 @@ def getBusiness(chosen_filter_map, user_lat, user_long):
         bus_reformat = {}
         bus_reformat['name'] = result[0]
         bus_reformat['photo_ref'] = get_image(result[1])
-        bus_reformat['distance'] = get_distance(user_lat,user_long,result[2],result[3])
+        bus_reformat['lat'] = result[2]
+        bus_reformat['long'] = result[3]
+        bus_reformat['user_lat'] = user_lat
+        bus_reformat['user_long'] = user_long
+        # bus_reformat['distance'] = get_distance(user_lat,user_long,result[2],result[3])
         bus_reformat['address'] = result[4]
         bus_reformat['tags'] = filter_dict
         filtered_results.append(bus_reformat)
         break
 
-  return sorted(filtered_results,key=lambda x: x['distance'])
+  return sorted(get_distance_multi(filtered_results), key=lambda x:x['distance'])
+
+def get_distance_single(bus):
+  bus['distance'] =  get_distance(bus['user_lat'],bus['user_long'],bus['lat'],bus['long'])
+  del bus['lat']
+  del bus['long']
+  del bus['user_lat']
+  del bus['user_long']
+  return bus
+
+def get_distance_multi(filtered_data):
+  result =[]
+  with ThreadPoolExecutor() as exe:
+      result = exe.map(get_distance_single,filtered_data)
+    
+  return result
 
 def get_business_info(name):
   bus = {}
