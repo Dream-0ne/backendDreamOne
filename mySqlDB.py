@@ -77,13 +77,28 @@ def getBusiness(chosen_filter_map, user_lat, user_long):
         bus_reformat['long'] = result[3]
         bus_reformat['user_lat'] = user_lat
         bus_reformat['user_long'] = user_long
-        # bus_reformat['distance'] = get_distance(user_lat,user_long,result[2],result[3])
         bus_reformat['address'] = result[4]
         bus_reformat['tags'] = filter_dict
         filtered_results.append(bus_reformat)
         break
 
   return sorted(get_distance_multi(filtered_results), key=lambda x:x['distance'])
+
+
+def cmp(bus1,bus2):
+  dis1 = bus1['distance'].split(" ")
+  num_1 = float(dis1[0])
+  unit_1 = dis1[1]
+  dis2 = bus2['distance']
+  num_2 = float(dis1[0])
+  unit_2 = dis1[1]
+  if unit_1 == unit_2:
+    return num_1 - num_2
+  else:
+    if unit_1 == 'ft':
+      return -1
+    return 1
+    
 
 def get_distance_single(bus):
   bus['distance'] =  get_distance(bus['user_lat'],bus['user_long'],bus['lat'],bus['long'])
